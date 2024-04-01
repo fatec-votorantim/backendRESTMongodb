@@ -2,12 +2,12 @@
 @baseURL = http://localhost:4000/api/prestadores
 
 // GET - Lista todos os prestadores
-GET {{baseURL}}/?limit=3&skip=0
+GET {{baseURL}}/?limit=10&skip=0
 Content-Type: application/json
 
 ###
 // GET - Lista o prestador pelo ID
-GET {{baseURL}}/id/65ef96f0ac9b323bc7dcdee2
+GET {{baseURL}}/id/65ef0fe9941ad65663f24e28
 Content-Type: application/json
 
 ###
@@ -50,20 +50,20 @@ PUT {{baseURL}}
 Content-Type: application/json
 
 {
-    "_id": "65efab75cbbf7f898859340d",
-    "cnpj": "45190324000150",
-    "razao_social": "SERVIÇOS MOTOBOY ALTERADO 2 LTDA.",
-    "cep": "1331016",
+    "_id": "65ef0fe9941ad65663f24e28",
+    "cnpj": "45150718000143",
+    "razao_social": "SERVIÇOS MOTOBOY LTDA. Alterado Novamente",
+    "cep": "13310160",
     "endereco": {
-      "logradouro": "Av. Presidente Kennedy, 321",
-      "complemento": "",
-      "bairro": "Centro",
-      "localidade": "Votorantim",
+      "logradouro": "Avenida Caetano Ruggieri",
+      "complemento": "de 2011/2012 a 3791/3792",
+      "bairro": "Parque Nossa Senhora da Candelária",
+      "localidade": "Itu",
       "uf": "SP"
     },
     "cnae_fiscal": 451510,
-    "nome_fantasia": "ZÉ MOTOBOY",
-    "data_inicio_atividade": "2022-07-22",
+    "nome_fantasia": "ELI MOTOBOY",
+    "data_inicio_atividade": "2024-08-31",
     "localizacao": {
       "type": "Point",
       "coordinates": [
