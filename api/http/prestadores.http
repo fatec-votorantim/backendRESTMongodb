@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 // DELETE - Remove o prestador pelo id
-DELETE {{baseURL}}/65ef96f0ac9b323bc7dcdee2
+DELETE {{baseURL}}/65f8e26a59db6a3493300cd0
 Content-Type: application/json
 
 ###
@@ -26,7 +26,7 @@ POST {{baseURL}}
 Content-Type: application/json
 
 {
-    "cnpj": "12345345000166",
+    "cnpj": "12345345000169",
     "razao_social": "MARIA ALCINA TRANSPORTES LTDA.",
     "cep": "13310169",
     "endereco": {"logradouro": "Av. Presidente Kennedy, 321",
