@@ -8,7 +8,10 @@ const {PORT} = process.env
 //Import das rotas da aplicação
 import RotasPrestadores from './routes/prestador.js'
 
-app.use(cors()) //CORS
+//Habilita o CORS Cross-Origin resource sharing
+app.use(cors({
+    origin: ['http://localhost:4000','https://backend-rest-mongodb.vercel.app'] //informe outras URL´s se necessário
+  }));
 app.use(express.json()) //Habilita o parse do JSON
 //Rota de conteúdo público
 app.use('/', express.static('public'))
