@@ -1,4 +1,5 @@
-const urlBase = 'http://localhost:4000/api'
+const urlBase = 'https://backend-rest-mongodb.vercel.app/api'
+//const urlBase = 'http://localhost:4000/api'
 const resultadoModal = new bootstrap.Modal(document.getElementById('modalMensagem'))
 
 async function carregaPrestadores(){
