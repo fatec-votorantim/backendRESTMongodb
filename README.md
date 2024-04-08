@@ -65,3 +65,7 @@ npm i jsonwebtoken
 - Na área de Environment Variables, recorte e cole o seu arquivo .env
 - Clique em Deploy e apaixone-se ♥️😃 pelo Vercel 
 - A cada novo push no seu repositório GIT ele automaticamente fará novamente o deploy.👏👏
+
+## 🖥 Exemplo de Deploy
+
+Acesse https://backend-rest-mongodb.vercel.app
