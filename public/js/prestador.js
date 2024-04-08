@@ -20,7 +20,7 @@ async function carregaPrestadores(){
               <td>${prestador.razao_social}</td>
               <td>${prestador.nome_fantasia}</td>
               <td>${prestador.cnae_fiscal}</td>
-              <td>${new Date(prestador.data_inicio_atividade).toLocaleDateString()}</td>
+              <td>${new Date(prestador.data_inicio_atividade).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</td>
               <td>${prestador.localizacao.coordinates[0]} / ${prestador.localizacao.coordinates[1]}</td>
               <td>
         <button class='btn btn-danger btn-sm' onclick='removePrestador("${prestador._id}")'>🗑 Excluir </button>
