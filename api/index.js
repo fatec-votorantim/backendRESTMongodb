@@ -3,7 +3,10 @@ import {config} from 'dotenv'
 config() // carrega as variáveis do .env
 
 const app = express()
-const cors = require('cors') // Habilita o CORS - Cross-origin resource sharing
+
+// Importa o módulo cors
+import cors from 'cors';
+
 const {PORT} = process.env
 //Import das rotas da aplicação
 import RotasPrestadores from './routes/prestador.js'
