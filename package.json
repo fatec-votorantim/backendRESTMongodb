@@ -16,7 +16,11 @@
   "author": "Ricardo Leme",
   "license": "MIT",
   "dependencies": {
+<<<<<<< HEAD
     "bcryptjs": "^2.4.3",
+=======
+    "cors": "^2.8.5",
+>>>>>>> 259a23e171e359300f6f7cae5ec9c39dbde5f52e
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "express-validator": "^7.0.1",
