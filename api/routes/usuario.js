@@ -3,6 +3,7 @@ import { connectToDatabase } from '../utils/mongodb.js'
 import { check, validationResult } from 'express-validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import auth from '../middleware/auth.js'
 
 const router = express.Router()
 const { db, ObjectId } = await connectToDatabase()
@@ -73,7 +74,7 @@ router.post('/', validaUsuario, async (req, res) => {
 })
 
 // GET Usuário
-router.get('/', async(req, res)=> {
+router.get('/', auth, async(req, res)=> {
     try{
         const docs = []
         await db.collection(nomeCollection)
@@ -91,4 +92,59 @@ router.get('/', async(req, res)=> {
     }
 })
 
+const validaLogin = [
+    check('email')
+        .not().isEmpty().trim().withMessage('O email é obrigatório')
+        .isEmail().withMessage('Informe um email válido para o login'),
+    check('senha')
+        .not().isEmpty().trim().withMessage('A senha é obrigatória')    
+]
+
+router.post('/login', validaLogin, async(req, res)=> {
+    const schemaErrors = validationResult(req)
+    if(!schemaErrors.isEmpty()){
+        return res.status(403).json(({errors: schemaErrors.array()}))
+    }
+    //obtendo os dados para o login
+    const {email, senha} = req.body
+    try{
+        //verificar se o email existe no Mongodb
+        let usuario = await db.collection(nomeCollection)
+        .find({email}).limit(1).toArray()
+       //Se o array estiver vazio, é que o email não existe
+       if (!usuario.length)
+           return res.status(404).json({ //not found
+            errors: [{
+                value: `${email}`,
+                msg: `O email ${email} não está cadastrado!`,
+                param: 'email'
+            }]
+           }) 
+       //Se o email existir, comparamos se a senha está correta
+       const isMatch = await bcrypt.compare(senha, usuario[0].senha)    
+       if (!isMatch)
+          return res.status(403).json({ //forbidden
+            errors: [{
+                value: 'senha',
+                msg: 'A senha informada está incorreta',
+                param: 'senha'
+            }]
+          })
+       //Iremos gerar o token JWT
+       jwt.sign(
+          { usuario: {id: usuario[0]._id} },
+          process.env.SECRET_KEY,
+          { expiresIn: process.env.EXPIRES_IN },
+          (err, token) => {
+            if (err) throw err
+            res.status(200).json({
+                access_token: token
+            })
+          }
+       )   
+    } catch (e){
+        console.error(e)
+    }
+
+})
 export default router
