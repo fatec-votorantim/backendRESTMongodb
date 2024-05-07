@@ -8,8 +8,10 @@ access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjYzO
 
 ###
 // GET - Lista o prestador pelo ID
-GET {{baseURL}}/id/65ef0fe9941ad65663f24e28
+GET {{baseURL}}/id/6639721466b5e6a6de9aade6
 Content-Type: application/json
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjYzOTVmMDZiZGIxYTQyMzcyMGRjZmEyIn0sImlhdCI6MTcxNTAzNzIwMywiZXhwIjoxNzE1MTIzNjAzfQ.l76Ccoiw-_2ZfYD23SYfrGiD-1_CifmbKC0Edch-2UI
+
 
 ###
 // GET - Lista o prestador pela razão social ou fantasia
@@ -25,10 +27,11 @@ Content-Type: application/json
 // POST - Insere um novo prestador
 POST {{baseURL}}
 Content-Type: application/json
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjYzOTVmMDZiZGIxYTQyMzcyMGRjZmEyIn0sImlhdCI6MTcxNTAzNzIwMywiZXhwIjoxNzE1MTIzNjAzfQ.l76Ccoiw-_2ZfYD23SYfrGiD-1_CifmbKC0Edch-2UI
 
 {
-    "cnpj": "12345345000169",
-    "razao_social": "MARIA ALCINA TRANSPORTES LTDA.",
+    "cnpj": "12345345000162",
+    "razao_social": "JOSÉ LOPES TRANSPORTES LTDA.",
     "cep": "13310169",
     "endereco": {"logradouro": "Av. Presidente Kennedy, 321",
                 "complemento": "",

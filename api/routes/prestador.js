@@ -156,6 +156,7 @@ router.delete('/:id', auth, async(req, res) => {
  */
 
 router.post('/', auth, validaPrestador, async(req, res) => {
+  req.body.usuarioInclusao = req.usuario.id
   try{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
