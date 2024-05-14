@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "nome": "José Lima Alves",
-    "email": "josealves3@uol.com.br",
+    "email": "josealves4@uol.com.br",
     "senha": "Alun0$"
 }
 
@@ -24,5 +24,5 @@ Content-Type: application/json
 
 {
     "email": "josealves3@uol.com.br",
-    "senha": "333Alun0$"
+    "senha": "Alun0$"
 }
