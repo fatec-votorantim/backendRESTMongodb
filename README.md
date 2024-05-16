@@ -69,3 +69,28 @@ npm i jsonwebtoken
 ## 🖥 Exemplo de Deploy
 
 Acesse https://backend-rest-mongodb.vercel.app
+
+
+## 🧪 Testes
+Para a execução dos testes, instale os pacote como dependência apenas de desenvolvimento:
+```
+npm install jest supertest -D
+```
+
+### Função de Cada um dos Pacotes
+
+| Pacote | Descrição |
+|---|---|
+| **Jest** | Um framework de testes JavaScript popular e leve para testes unitários, testes de integração e testes de ponta a ponta. |
+| **SuperTest** | Uma biblioteca para testar APIs Node.js com o Jest ou Mocha. Ela fornece uma interface de alto nível para realizar requisições HTTP para sua API e verificar as respostas. |
+
+### Outros ajustes
+* Crie uma pasta chamada ```__tests__``` no raiz do projeto para armazenar todos os testes criados.
+* Edite o _package.json_ e informe que o framework a ser utilizado é o jest. Com isso, será possível executar o comando ```npm run test```:
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
