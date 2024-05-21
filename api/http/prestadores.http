@@ -27,10 +27,10 @@ Content-Type: application/json
 // POST - Insere um novo prestador
 POST {{baseURL}}
 Content-Type: application/json
-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjYzOTVmMDZiZGIxYTQyMzcyMGRjZmEyIn0sImlhdCI6MTcxNTAzNzIwMywiZXhwIjoxNzE1MTIzNjAzfQ.l76Ccoiw-_2ZfYD23SYfrGiD-1_CifmbKC0Edch-2UI
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0YmNiNmRlODQzM2I3MmVlYTFiYTdhIn0sImlhdCI6MTcxNjI0NjI3NiwiZXhwIjoxNzE2MzMyNjc2fQ.mXVnvoGR2keT-FZVGvGsiW3uGT9CToZw10Yq5GtVPvo
 
 {
-    "cnpj": "12345345000162",
+    "cnpj": "12345345000174",
     "razao_social": "JOSÉ LOPES TRANSPORTES LTDA.",
     "cep": "13310169",
     "endereco": {"logradouro": "Av. Presidente Kennedy, 321",
