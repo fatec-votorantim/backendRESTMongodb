@@ -127,6 +127,3 @@ Para testar, aponte o navegador para a url:
 
 https://seusite.com.br/api/doc
 
-Veja um exemplo:
-
-https://backend-rest-mongodb.vercel.app/api/doc
