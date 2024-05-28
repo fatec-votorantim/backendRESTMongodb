@@ -1,5 +1,5 @@
 import express from 'express'
-import {config} from 'dotenv'
+import { config } from 'dotenv'
 import fs from 'fs'
 import swaggerUI from 'swagger-ui-express'
 config() // carrega as variáveis do .env
@@ -9,7 +9,7 @@ const app = express()
 // Importa o módulo cors
 import cors from 'cors'
 
-const {PORT} = process.env
+const { PORT } = process.env
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
 
 //Import das rotas da aplicação
@@ -27,7 +27,7 @@ app.disable('x-powered-by')
 app.use('/favicon.ico', express.static('public/images/logo-api.png'))
 
 //Rota default     
-app.get('/api', (req, res)=> {
+app.get('/api', (req, res) => {
     /* 
     * #swagger.tags = ['Default']
     * #swagger.summary = 'Rota default que retorna a versão da API'
@@ -46,9 +46,13 @@ app.use('/api/prestadores', RotasPrestadores)
 app.use('/api/usuarios', RotasUsuarios)
 
 /* Rota da documentação Swagger */
-app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')),{ customCssUrl: CSS_URL }))
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')), {
+    customCss:
+        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+    customCssUrl: CSS_URL
+}))
 
 //Listen
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log(`💻Servidor rodando na porta ${PORT}`)
 })
