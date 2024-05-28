@@ -120,7 +120,10 @@ import swaggerUI from 'swagger-ui-express'
 Crie a nova rota para a documentação:
 ```javascript
 /* Rota da documentação Swagger */
-app.use('/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./src/swagger/swagger_output.json'))))
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
+
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')),{ customCssUrl: CSS_URL }))
+
 ```
 
 Para testar, aponte o navegador para a url:
