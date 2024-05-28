@@ -3,7 +3,7 @@
     "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }],    
         "functions": {
           "api/index.js": {
-            "includeFiles": "swagger_output.json"
+            "includeFiles": "swagger/swagger_output.json"
           }
         }          
 }
