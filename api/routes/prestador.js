@@ -8,50 +8,59 @@ const { db, ObjectId } = await connectToDatabase()
 const nomeCollection = 'prestadores'
 
 const validaPrestador = [
-check('cnpj')
-  .not().isEmpty().trim().withMessage('É obrigatório informar o cnpj')
-  .isNumeric().withMessage('O CNPJ deve ter apenas números')
-  .isLength({min:14, max:14}).withMessage('O CNPJ deve ter 14 números')
-  .custom(async (cnpj, { req }) => {
-     const contaPrestador = await db.collection(nomeCollection)
-     .countDocuments({
-      'cnpj': cnpj,
-      '_id': { $ne: new ObjectId(req.body._id) } // Excluir o documento atual da comparação
-    })
-     if(contaPrestador > 0){
-      throw new Error('O CNPJ informado já está cadastrado!')
-     }
-  }),
-check('razao_social')
-  .not().isEmpty().trim().withMessage('A Razão Social é obrigatória')
-  .isLength({min:5}).withMessage('A razão é muito curta. Mínimo de 5')  
-  .isLength({max:200}).withMessage('A razão é muito longa. Máximo de 200')
-  .isAlphanumeric('pt-BR', {ignore: '/. '})
-  .withMessage('A razão social não pode conter caracteres especiais'),
-check('cep')
-  .isLength({min:8, max:8}).withMessage('O CEP informado é inválido') 
-  .isNumeric().withMessage('O CEP deve ter apenas números') 
-  .not().isEmpty().trim().withMessage('É obrigatório informar o CEP'),
-check('endereco.logradouro').notEmpty().withMessage('O Logradouro é obrig.'),
-check('endereco.bairro').notEmpty().withMessage('O bairro é obrigatório'),
-check('endereco.localidade').notEmpty().withMessage('A localidade é obrig'),
-check('endereco.uf').isLength({min: 2, max:2}).withMessage('UF é inválida'),
-check('cnae_fiscal').isNumeric().withMessage('O CNAE deve ser um número'),
-check('nome_fantasia').optional({nullable: true}),
-check('data_inicio_atividade').matches(/^\d{4}-\d{2}-\d{2}$/)
-     .withMessage('O formato de data é inválido. Informe yyyy-mm-dd'),
-check('localizacao.type').equals('Point').withMessage('Tipo inválido'),
-check('localizacao.coordinates').isArray().withMessage('Coord. inválidas'),
-check('localizacao.coordinates.*').isFloat()
-      .withMessage('Os valores das coordenadas devem ser números')      
+  check('cnpj')
+    .not().isEmpty().trim().withMessage('É obrigatório informar o cnpj')
+    .isNumeric().withMessage('O CNPJ deve ter apenas números')
+    .isLength({ min: 14, max: 14 }).withMessage('O CNPJ deve ter 14 números')
+    .custom(async (cnpj, { req }) => {
+      const contaPrestador = await db.collection(nomeCollection)
+        .countDocuments({
+          'cnpj': cnpj,
+          '_id': { $ne: new ObjectId(req.body._id) } // Excluir o documento atual da comparação
+        })
+      if (contaPrestador > 0) {
+        throw new Error('O CNPJ informado já está cadastrado!')
+      }
+    }),
+  check('razao_social')
+    .not().isEmpty().trim().withMessage('A Razão Social é obrigatória')
+    .isLength({ min: 5 }).withMessage('A razão é muito curta. Mínimo de 5')
+    .isLength({ max: 200 }).withMessage('A razão é muito longa. Máximo de 200')
+    .isAlphanumeric('pt-BR', { ignore: '/. ' })
+    .withMessage('A razão social não pode conter caracteres especiais'),
+  check('cep')
+    .isLength({ min: 8, max: 8 }).withMessage('O CEP informado é inválido')
+    .isNumeric().withMessage('O CEP deve ter apenas números')
+    .not().isEmpty().trim().withMessage('É obrigatório informar o CEP'),
+  check('endereco.logradouro').notEmpty().withMessage('O Logradouro é obrig.'),
+  check('endereco.bairro').notEmpty().withMessage('O bairro é obrigatório'),
+  check('endereco.localidade').notEmpty().withMessage('A localidade é obrig'),
+  check('endereco.uf').isLength({ min: 2, max: 2 }).withMessage('UF é inválida'),
+  check('cnae_fiscal').isNumeric().withMessage('O CNAE deve ser um número'),
+  check('nome_fantasia').optional({ nullable: true }),
+  check('data_inicio_atividade').matches(/^\d{4}-\d{2}-\d{2}$/)
+    .withMessage('O formato de data é inválido. Informe yyyy-mm-dd'),
+  check('localizacao.type').equals('Point').withMessage('Tipo inválido'),
+  check('localizacao.coordinates').isArray().withMessage('Coord. inválidas'),
+  check('localizacao.coordinates.*').isFloat()
+    .withMessage('Os valores das coordenadas devem ser números')
 ]
 
-/**
- * GET /api/prestadores
- * Lista todos os prestadores de serviço
- * Parâmetros: limit, skip e order
- */
+
 router.get('/', auth, async (req, res) => {
+  /* 
+  * #swagger.tags = ['Prestadores de Serviço']
+  * #swagger.summary = 'Lista todos os prestadores de serviço'
+  * #swagger.description = 'Endpoint para obter todos os prestadores de serviço.'    
+  * #swagger.path = '/prestadores'
+  * #swagger.method = 'GET'
+  * #swagger.parameters['limit'] = { type: 'int', description: 'Limite de registros por página (opcional, padrão: 10)' }
+  * #swagger.parameters['skip'] = { type: 'int', description: 'Número de registros a pular (opcional, padrão: 0)' }
+  * #swagger.parameters['order'] = { type: 'string', description: 'Campo de ordenação (opcional, ex: razao_social:asc)' }
+  * #swagger.responses[200] = { description: 'Array com os prestadores de serviço' }
+  * #swagger.responses[401] = { description: 'Acesso negado. É obrigatório o envio do token JWT' }
+  * #swagger.responses[500] = { description: 'Erro ao obter a listagem dos prestadores' }
+  */
   const { limit, skip, order } = req.query //Obter da URL
   try {
     const docs = []
@@ -79,6 +88,17 @@ router.get('/', auth, async (req, res) => {
  * Parâmetros: id
  */
 router.get('/id/:id', auth, async (req, res) => {
+  /* 
+   * #swagger.tags = ['Prestadores de Serviço']
+   * #swagger.summary = 'Lista o prestador de serviço pelo ID'
+   * #swagger.description = 'Endpoint para obter um único prestador de serviço pelo ID.'    
+   * #swagger.path = '/prestadores/{id}'
+   * #swagger.method = 'GET'
+   * #swagger.parameters['id'] = { type: 'string', description: 'id do Prestador de Serviço' }   
+   * #swagger.responses[200] = { description: 'Array com o prestador de serviço' }
+   * #swagger.responses[401] = { description: 'Acesso negado. É obrigatório o envio do token JWT' }
+   * #swagger.responses[500] = { description: 'Erro ao obter o prestador pelo ID' }
+   */
   try {
     const docs = []
     await db.collection(nomeCollection)
@@ -98,11 +118,22 @@ router.get('/id/:id', auth, async (req, res) => {
   }
 })
 /**
- * GET /api/prestadores/razao/:filtor
- * Lista o prestador de serviço pela razão social
+ * GET /api/prestadores/razao/:filtro
+ * Lista o prestador de serviço pela razão social ou fantasia
  * Parâmetros: filtro
  */
 router.get('/razao/:filtro', auth, async (req, res) => {
+  /* 
+ * #swagger.tags = ['Prestadores de Serviço']
+ * #swagger.summary = 'Lista o prestador de serviço pela razão social ou nome fantasia'
+ * #swagger.description = 'Endpoint para obter uma relação de prestadores de serviço pela razão social ou nome fantasia.'    
+ * #swagger.path = '/prestadores/razao/{filtro}'
+ * #swagger.method = 'GET'
+ * #swagger.parameters['filtro'] = { type: 'string', description: 'parte da razão social ou nome fantasia do Prestador de Serviço' }   
+ * #swagger.responses[200] = { description: 'Array com o prestador de serviço' }
+ * #swagger.responses[401] = { description: 'Acesso negado. É obrigatório o envio do token JWT' }
+ * #swagger.responses[500] = { description: 'Erro ao obter o prestador pelo ID' }
+ */
   try {
     const filtro = req.params.filtro.toString()
     const docs = []
@@ -132,11 +163,23 @@ router.get('/razao/:filtro', auth, async (req, res) => {
  * Remove o prestador de serviço pelo id
  * Parâmetros: id
  */
-router.delete('/:id', auth, async(req, res) => {
+router.delete('/:id', auth, async (req, res) => {
+  /* 
+ * #swagger.tags = ['Prestadores de Serviço']
+ * #swagger.summary = 'Remove o prestador de serviço pelo ID'
+ * #swagger.description = 'Endpoint para apagar um único prestador de serviço pelo ID.'    
+ * #swagger.path = '/prestadores/{id}'
+ * #swagger.method = 'DELETE'
+ * #swagger.parameters['id'] = { type: 'string', description: 'id do Prestador de Serviço a ser excluído' }   
+ * #swagger.responses[200] = { description: 'Registro removido com sucesso' }
+ * #swagger.responses[401] = { description: 'Acesso negado. É obrigatório o envio do token JWT' }
+ * #swagger.responses[404] = { description: 'Não há nenhum prestador com o id informado' }
+ * #swagger.responses[500] = { description: 'Erro ao excluir o prestador pelo ID' }
+ */
   const result = await db.collection(nomeCollection).deleteOne({
-    "_id": { $eq: new ObjectId(req.params.id)}
+    "_id": { $eq: new ObjectId(req.params.id) }
   })
-  if (result.deletedCount === 0){
+  if (result.deletedCount === 0) {
     res.status(404).json({
       errors: [{
         value: `Não há nenhum prestador com o id ${req.params.id}`,
@@ -155,18 +198,38 @@ router.delete('/:id', auth, async(req, res) => {
  * Parâmetros: Objeto prestador
  */
 
-router.post('/', auth, validaPrestador, async(req, res) => {
-  req.body.usuarioInclusao = req.usuario.id
-  try{
-    const errors = validationResult(req)
-    if(!errors.isEmpty()){
-      return res.status(400).json({ errors: errors.array()})
+router.post('/', auth, validaPrestador, async (req, res) => {
+  /* 
+   * #swagger.tags = ['Prestadores de Serviço']
+   * #swagger.summary = 'Adiciona um novo prestador de serviço'
+   * #swagger.description = 'Endpoint para adicionar um novo prestador de serviço.'    
+   * #swagger.path = '/prestadores'
+   * #swagger.method = 'POST'
+   * #swagger.parameters['prestador'] = {
+       in: 'body',
+       description: 'Informações do prestador de serviço',
+       required: true,
+       schema: {
+         type: 'object',
+         properties: {
+           cnpj: { type: 'string', example: '12345345000166' },
+           razao_social: { type: 'string', example: 'MARIA ALCINA TRANSPORTES LTDA.' },
+           cep: { type: 'string', example: '13310160' }         
+     }
     }
-    const prestador = 
-                 await db.collection(nomeCollection).insertOne(req.body)
+  }
+   */
+  req.body.usuarioInclusao = req.usuario.id //inserindo o id do usuário logado
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    const prestador =
+      await db.collection(nomeCollection).insertOne(req.body)
     res.status(201).json(prestador) //201 é o status created            
-  } catch (err){
-    res.status(500).json({message: `${err.message} Erro no Server`})
+  } catch (err) {
+    res.status(500).json({ message: `${err.message} Erro no Server` })
   }
 })
 /**
@@ -174,20 +237,27 @@ router.post('/', auth, validaPrestador, async(req, res) => {
  * Altera um prestador de serviço pelo _id
  * Parâmetros: Objeto prestador
  */
-router.put('/', auth, validaPrestador, async(req, res) => {
+router.put('/', auth, validaPrestador, async (req, res) => {
+  /* 
+ * #swagger.tags = ['Prestadores de Serviço']
+ * #swagger.summary = 'Altera um prestador de serviço pelo ID'
+ * #swagger.description = 'Endpoint para alterar um prestador de serviço pelo ID.'    
+ * #swagger.path = '/prestadores'
+ * #swagger.method = 'PUT'
+ */
   let idDocumento = req.body._id //armazenamos o _id do documento
   delete req.body._id //removemos o _id do body que foi recebido na req.
   try {
-      const errors = validationResult(req)
-      if(!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array()})
-      }
-      const prestador = await db.collection(nomeCollection)
-      .updateOne({'_id': {$eq: new ObjectId(idDocumento)}},
-                 {$set: req.body})
-      res.status(202).json(prestador) //Accepted           
-  } catch (err){
-    res.status(500).json({errors: err.message})
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    const prestador = await db.collection(nomeCollection)
+      .updateOne({ '_id': { $eq: new ObjectId(idDocumento) } },
+        { $set: req.body })
+    res.status(202).json(prestador) //Accepted           
+  } catch (err) {
+    res.status(500).json({ errors: err.message })
   }
 })
 export default router

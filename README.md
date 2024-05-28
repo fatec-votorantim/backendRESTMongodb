@@ -72,19 +72,19 @@ Acesse https://backend-rest-mongodb.vercel.app
 
 
 ## 🧪 Testes
-Para a execução dos testes, instale os pacote como dependência apenas de desenvolvimento:
+Para a execução dos testes, instale os pacotes como dependência apenas de desenvolvimento:
 ```
 npm install jest supertest -D
 ```
 
-### Função de Cada um dos Pacotes
+### Função de Cada um dos Pacotes de testes 🧪
 
 | Pacote | Descrição |
 |---|---|
 | **Jest** | Um framework de testes JavaScript popular e leve para testes unitários, testes de integração e testes de ponta a ponta. |
 | **SuperTest** | Uma biblioteca para testar APIs Node.js com o Jest ou Mocha. Ela fornece uma interface de alto nível para realizar requisições HTTP para sua API e verificar as respostas. |
 
-### Outros ajustes
+### Outros ajustes nos testes 🧪
 * Crie uma pasta chamada ```__tests__``` no raiz do projeto para armazenar todos os testes criados.
 * Edite o _package.json_ e informe que o framework a ser utilizado é o jest. Com isso, será possível executar o comando ```npm run test```:
 ```json
@@ -94,3 +94,39 @@ npm install jest supertest -D
   }
 }
 ```
+## 📃Documentação da API
+Para a geração automática da documentação, instale os pacotes a seguir:
+```
+npm i swagger-ui-express
+npm i swagger-autogen -D
+```
+* Crie uma pasta chamada ```swagger``` dentro da pasta ```api``` do projeto para armazenar a configuração do swagger.
+* Edite o _package.json_ e informe que utilizaremos o swagger. Com isso, será possível executar o comando ```npm run doc```:
+```json
+{
+  "scripts": {
+    "doc": "node swagger.js"
+  }
+}
+```
+### Editando o api/index.js
+
+Adicione os novos imports necessários:
+```javascript
+import fs from 'fs'
+import swaggerUI from 'swagger-ui-express'
+```
+
+Crie a nova rota para a documentação:
+```javascript
+/* Rota da documentação Swagger */
+app.use('/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./src/swagger/swagger_output.json'))))
+```
+
+Para testar, aponte o navegador para a url:
+
+https://seusite.com.br/api/doc
+
+Veja um exemplo:
+
+https://backend-rest-mongodb.vercel.app/api/doc

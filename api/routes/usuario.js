@@ -53,6 +53,26 @@ const validaUsuario = [
 
 //POST de Usuário
 router.post('/', validaUsuario, async (req, res) => {
+    /* 
+ * #swagger.tags = ['Usuários']
+ * #swagger.summary = 'Adiciona um novo usuário ao sistema'
+ * #swagger.description = 'Endpoint para adicionar um novo usuário.'    
+ * #swagger.path = '/usuarios'
+ * #swagger.method = 'POST'
+ * #swagger.parameters['usuario'] = {
+     in: 'body',
+     description: 'Informações do usuário',
+     required: true,
+     schema: {
+       type: 'object',
+       properties: {
+         nome: { type: 'string', example: 'JOSÉ MARIA LIMA' },
+         email: { type: 'string', example: 'joselima@uol.com.br' },
+         senha: { type: 'string', example: 'SenhaSegura24!' }
+       }
+     }
+   }
+ */
     const schemaErrors = validationResult(req)
     if (!schemaErrors.isEmpty()) {
         return res.status(403).json({
@@ -74,17 +94,24 @@ router.post('/', validaUsuario, async (req, res) => {
 })
 
 // GET Usuário
-router.get('/', auth, async(req, res)=> {
-    try{
+router.get('/', auth, async (req, res) => {
+    /* 
+    * #swagger.tags = ['Usuários']
+    * #swagger.summary = 'Lista todos os usuários do sistema'
+    * #swagger.description = 'Endpoint para obter todos os usuários do sistema.'    
+    * #swagger.path = '/usuarios'
+    * #swagger.method = 'GET'
+    */
+    try {
         const docs = []
         await db.collection(nomeCollection)
-        .find({},{senha: 0})
-        .sort({nome:1})
-        .forEach((doc) => {
-            docs.push(doc)
-          })
+            .find({}, { senha: 0 })
+            .sort({ nome: 1 })
+            .forEach((doc) => {
+                docs.push(doc)
+            })
         res.status(200).json(docs)
-    } catch (err){
+    } catch (err) {
         res.status(500).json({
             message: 'Erro ao obter a listagem dos usuários',
             error: `${err.message}`
@@ -97,52 +124,59 @@ const validaLogin = [
         .not().isEmpty().trim().withMessage('O email é obrigatório')
         .isEmail().withMessage('Informe um email válido para o login'),
     check('senha')
-        .not().isEmpty().trim().withMessage('A senha é obrigatória')    
+        .not().isEmpty().trim().withMessage('A senha é obrigatória')
 ]
 
-router.post('/login', validaLogin, async(req, res)=> {
+router.post('/login', validaLogin, async (req, res) => {
+    /* 
+    * #swagger.tags = ['Usuários']
+    * #swagger.summary = 'Efetua o login do usuário do sistema'
+    * #swagger.description = 'Endpoint para efetuar o login e receber o token JWT.'    
+    * #swagger.path = '/usuarios/login'
+    * #swagger.method = 'POST'
+    */
     const schemaErrors = validationResult(req)
-    if(!schemaErrors.isEmpty()){
-        return res.status(403).json(({errors: schemaErrors.array()}))
+    if (!schemaErrors.isEmpty()) {
+        return res.status(403).json(({ errors: schemaErrors.array() }))
     }
     //obtendo os dados para o login
-    const {email, senha} = req.body
-    try{
+    const { email, senha } = req.body
+    try {
         //verificar se o email existe no Mongodb
         let usuario = await db.collection(nomeCollection)
-        .find({email}).limit(1).toArray()
-       //Se o array estiver vazio, é que o email não existe
-       if (!usuario.length)
-           return res.status(404).json({ //not found
-            errors: [{
-                value: `${email}`,
-                msg: `O email ${email} não está cadastrado!`,
-                param: 'email'
-            }]
-           }) 
-       //Se o email existir, comparamos se a senha está correta
-       const isMatch = await bcrypt.compare(senha, usuario[0].senha)    
-       if (!isMatch)
-          return res.status(403).json({ //forbidden
-            errors: [{
-                value: 'senha',
-                msg: 'A senha informada está incorreta',
-                param: 'senha'
-            }]
-          })
-       //Iremos gerar o token JWT
-       jwt.sign(
-          { usuario: {id: usuario[0]._id} },
-          process.env.SECRET_KEY,
-          { expiresIn: process.env.EXPIRES_IN },
-          (err, token) => {
-            if (err) throw err
-            res.status(200).json({
-                access_token: token
+            .find({ email }).limit(1).toArray()
+        //Se o array estiver vazio, é que o email não existe
+        if (!usuario.length)
+            return res.status(404).json({ //not found
+                errors: [{
+                    value: `${email}`,
+                    msg: `O email ${email} não está cadastrado!`,
+                    param: 'email'
+                }]
             })
-          }
-       )   
-    } catch (e){
+        //Se o email existir, comparamos se a senha está correta
+        const isMatch = await bcrypt.compare(senha, usuario[0].senha)
+        if (!isMatch)
+            return res.status(403).json({ //forbidden
+                errors: [{
+                    value: 'senha',
+                    msg: 'A senha informada está incorreta',
+                    param: 'senha'
+                }]
+            })
+        //Iremos gerar o token JWT
+        jwt.sign(
+            { usuario: { id: usuario[0]._id } },
+            process.env.SECRET_KEY,
+            { expiresIn: process.env.EXPIRES_IN },
+            (err, token) => {
+                if (err) throw err
+                res.status(200).json({
+                    access_token: token
+                })
+            }
+        )
+    } catch (e) {
         console.error(e)
     }
 

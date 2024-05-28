@@ -1,5 +1,7 @@
 import express from 'express'
 import {config} from 'dotenv'
+import fs from 'fs'
+import swaggerUI from 'swagger-ui-express'
 config() // carrega as variáveis do .env
 
 const app = express()
@@ -22,16 +24,28 @@ app.disable('x-powered-by')
 //Configurando o favicon
 app.use('/favicon.ico', express.static('public/images/logo-api.png'))
 
-//Rota default
+//Rota default     
 app.get('/api', (req, res)=> {
+    /* 
+    * #swagger.tags = ['Default']
+    * #swagger.summary = 'Rota default que retorna a versão da API'
+    * #swagger.description = 'Endpoint que retorna a versão da API'    
+    * #swagger.path = '/'
+    * #swagger.method = 'GET'
+    */
     res.status(200).json({
         message: 'API FATEC 100% funcional🚀',
-        version: '1.0.0'
+        version: '1.4.2',
+        doc: 'https://backend-rest-mongodb.vercel.app/api/doc'
     })
 })
 //Rotas da API
 app.use('/api/prestadores', RotasPrestadores)
 app.use('/api/usuarios', RotasUsuarios)
+
+/* Rota da documentação Swagger */
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json'))))
+
 //Listen
 app.listen(PORT, function(){
     console.log(`💻Servidor rodando na porta ${PORT}`)
