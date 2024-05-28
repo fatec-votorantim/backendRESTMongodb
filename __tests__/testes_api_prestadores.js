@@ -61,7 +61,7 @@ describe('API REST de Prestadores com o token', ()=> {
     })
 
     dadosPrestador = {
-        "cnpj": "12345345000611",
+        "cnpj": "12345345000622",
         "razao_social": "JOSÉ LOPES 2 TRANSPORTES LTDA.",
         "cep": "13310169",
         "endereco": {"logradouro": "Av. Presidente Kennedy, 321",
@@ -110,4 +110,56 @@ describe('API REST de Prestadores com o token', ()=> {
         .set('access-token', token)
         .expect(200)
     })
+
+    it('PUT - Altera os dados do prestador', async()=> {
+        novoDadosPrestador = {
+            ...dadosPrestador, //spread operator
+            '_id' : idPrestadorInserido
+        }
+        novoDadosPrestador.razao_social += ' alterado'
+        const response = await request(baseURL)
+        .put('/prestadores')
+        .set('Content-Type','application/json')
+        .set('access-token', token)
+        .send(novoDadosPrestador)
+        .expect(202) //Accepted
+
+        expect(response.body).toHaveProperty('acknowledged')
+        expect(response.body.acknowledged).toBe(true)
+
+        expect(response.body).toHaveProperty('modifiedCount')
+        expect(typeof response.body.modifiedCount).toBe('number')
+        expect(response.body.modifiedCount).toBeGreaterThan(0)
+    })
+
+    it('DELETE - Remove o prestador', async() => {
+        const response = await request(baseURL)
+        .delete(`/prestadores/${idPrestadorInserido}`)
+        .set('Content-Type','application/json')
+        .set('access-token', token)
+        .expect(200)
+
+        expect(response.body).toHaveProperty('acknowledged')
+        expect(response.body.acknowledged).toBe(true)
+
+        expect(response.body).toHaveProperty('deletedCount')
+        expect(typeof response.body.deletedCount).toBe('number')
+        expect(response.body.deletedCount).toBeGreaterThan(0)
+    })
+
+    it('POST - Insere um prestador sem o CNPJ', async() => {
+        dadosPrestador.cnpj = ''
+        const response = await request(baseURL)
+        .post('/prestadores')
+        .set('Content-Type','application/json')
+        .set('access-token', token)
+        .set(dadosPrestador)
+        .expect(400) //Bad Request
+    
+        expect(response.body).toHaveProperty('errors')
+        const avisoErro = response.body.errors[0].msg
+    
+        expect(avisoErro).toEqual('É obrigatório informar o cnpj')
+    })
 })
+

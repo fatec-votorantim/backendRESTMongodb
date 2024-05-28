@@ -4,7 +4,7 @@
 // GET - Lista todos os prestadores
 GET {{baseURL}}/?limit=10&skip=0
 Content-Type: application/json
-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0YmNiNmRlODQzM2I3MmVlYTFiYTdhIn0sImlhdCI6MTcxNjI0NjI3NiwiZXhwIjoxNzE2MzMyNjc2fQ.mXVnvoGR2keT-FZVGvGsiW3uGT9CToZw10Yq5GtVPvo
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0YmNiNmRlODQzM2I3MmVlYTFiYTdhIn0sImlhdCI6MTcxNjg0OTMyMywiZXhwIjoxNzE2OTM1NzIzfQ.isCo9fdfj0oSE7080ZT5WB9g-WGPBPZ5HcwGMJKfwjA
 
 ###
 // GET - Lista o prestador pelo ID
@@ -20,8 +20,10 @@ Content-Type: application/json
 
 ###
 // DELETE - Remove o prestador pelo id
-DELETE {{baseURL}}/65f8e26a59db6a3493300cd0
+DELETE {{baseURL}}/665509fa62fb1707223125b8
 Content-Type: application/json
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0YmNiNmRlODQzM2I3MmVlYTFiYTdhIn0sImlhdCI6MTcxNjg0OTMyMywiZXhwIjoxNzE2OTM1NzIzfQ.isCo9fdfj0oSE7080ZT5WB9g-WGPBPZ5HcwGMJKfwjA
+
 
 ###
 // POST - Insere um novo prestador
@@ -52,9 +54,10 @@ access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0Y
 
 PUT {{baseURL}}
 Content-Type: application/json
+access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjY0YmNiNmRlODQzM2I3MmVlYTFiYTdhIn0sImlhdCI6MTcxNjg0OTMyMywiZXhwIjoxNzE2OTM1NzIzfQ.isCo9fdfj0oSE7080ZT5WB9g-WGPBPZ5HcwGMJKfwjA
 
 {
-    "_id": "65ef0fe9941ad65663f24e28",
+    "_id": "665509fa62fb1707223125b8",
     "cnpj": "45150718000143",
     "razao_social": "SERVIÇOS MOTOBOY LTDA. Alterado Novamente",
     "cep": "13310160",
