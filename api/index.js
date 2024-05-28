@@ -10,6 +10,8 @@ const app = express()
 import cors from 'cors'
 
 const {PORT} = process.env
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
+
 //Import das rotas da aplicação
 import RotasPrestadores from './routes/prestador.js'
 import RotasUsuarios from './routes/usuario.js'
@@ -44,7 +46,7 @@ app.use('/api/prestadores', RotasPrestadores)
 app.use('/api/usuarios', RotasUsuarios)
 
 /* Rota da documentação Swagger */
-app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json'))))
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')),{ customCssUrl: CSS_URL }))
 
 //Listen
 app.listen(PORT, function(){
