@@ -97,7 +97,7 @@ npm install jest supertest -D
 ## 📃Documentação da API
 Para a geração automática da documentação, instale os pacotes a seguir:
 ```
-npm i swagger-ui-express
+npm i swagger-ui-express@4.3 
 npm i swagger-autogen -D
 ```
 * Crie uma pasta chamada ```swagger``` dentro da pasta ```api``` do projeto para armazenar a configuração do swagger.
